@@ -1,0 +1,636 @@
+<div class="grid p-fluid">
+    <div class="col-12">
+        <div class="card card-w-title">
+            <p-menubar [model]="tieredItems">
+            </p-menubar>
+        </div>
+    </div>
+</div>
+
+<p-toast key="tst"></p-toast>
+<div *ngIf="mostrarFormulario" class="grid">
+    <div [@fadeInOut] class="col-12">
+        <div class="card">
+            <h5>Datos del Usuario:</h5>
+            <form [formGroup]="addUserForm" autocomplete="off" (ngSubmit)="addUser()">
+                <div class="p-fluid p-formgrid grid">
+                    <div class="field col-12 md:col-6">
+                        <label htmlFor="name2">Nombre(s)</label>
+                        <input pInputText id="name2" type="text" formControlName="user_name" />
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <label htmlFor="lastname2">Apellidos</label>
+                        <input pInputText id="lastname2" type="text" formControlName="user_lastName" />
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label htmlFor="rol2">Rol del perfil</label>
+                        <p-dropdown [options]="dropdownItems" optionLabel="roles_name"
+                            formControlName="roles_id"></p-dropdown>
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label htmlFor="rol2">Horario:</label>
+                        <p-dropdown [options]="dropdownItemsTimeTable" optionLabel="description_timetable"
+                            formControlName="id_timetable"></p-dropdown>
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label htmlFor="phone2">Telefono</label>
+                        <p-inputMask inputId="phone_id1" formControlName="phone_id" mask="(999)999-99-99"></p-inputMask>
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label htmlFor="email">Correo electronico</label>
+                        <input id="email1" type="email" formControlName="email" pInputText>
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label htmlFor="nickname2">nickname</label>
+                        <input pInputText id="nickname2" type="text" formControlName="nickname" />
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label for="password1">Contraseña: </label>
+                        <p-password id="password1" formControlName="password" [toggleMask]="true">
+                            <ng-template pTemplate="header">
+                                <h6>elige una contraseña</h6>
+                            </ng-template>
+                            <ng-template pTemplate="footer">
+                                <p-divider></p-divider>
+                                <p class="mt-2">Sugerencias</p>
+                                <ul class="pl-2 ml-2 mt-0" style="line-height: 1.5">
+                                    <li>Al menos una minúscula</li>
+                                    <li>Al menos una mayúscula</li>
+                                    <li>Al menos un numérico</li>
+                                    <li>Mínimo 8 caracteres</li>
+                                </ul>
+                            </ng-template>
+                        </p-password>
+                    </div>
+
+                    <input *ngIf="mostrarInput" id="id_timetable1" type="hidden" formControlName="id_timetable"
+                        pInputText class="w-full md:w-30rem mb-5" style="padding:1rem">
+                </div>
+
+                <div class="grid">
+                    <div class="col-2 col-offset-10">
+                        <button pButton pRipple type="button" label="Guardar"
+                            class="p-button-raised p-button-rounded p-mr-2" type="button" (click)="addUser()"
+                            [disabled]="addUserForm.invalid">
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="showFormTimeTable" class="grid">
+    <div [@fadeInOut] class="col-12">
+        <div class="card">
+            <h5>Datos del Horario:</h5>
+            <form [formGroup]="addTimeTableForm" autocomplete="off" (ngSubmit)="addTimeTable()">
+
+                <div class="p-fluid p-formgrid grid">
+                    <div class="field col-12 md:col-12">
+                        <label htmlFor="description2">Descripción:</label>
+                        <input pInputText id="description2" type="text" formControlName="description" />
+                    </div>
+
+                    <div class="field col-12 md:col">
+                        <label>Lunes</label>
+                        <br>
+                        <label htmlFor="lunesEntrada">Hora entrada: </label>
+                        <p-calendar id="lunesEntrada" dataType="string" timeOnly="true"
+                            formControlName="lunesEntrada"></p-calendar>
+                        <br>
+                        <label htmlFor="lunesSalida">Hora salida: </label>
+                        <p-calendar id="lunesSalida" dataType="string" timeOnly="true"
+                            formControlName="lunesSalida"></p-calendar>
+                    </div>
+                    <div class="field col-12 md:col">
+                        <label htmlFor="description2">Martes:</label>
+                        <br>
+                        <label htmlFor="martesEntrada">Hora entrada: </label>
+                        <p-calendar id="martesEntrada" dataType="string" timeOnly="true"
+                            formControlName="martesEntrada"></p-calendar>
+                        <br>
+                        <label htmlFor="martesSalida">Hora salida: </label>
+                        <p-calendar id="martesSalida" dataType="string" timeOnly="true"
+                            formControlName="martesSalida"></p-calendar>
+                    </div>
+                    <div class="field col-12 md:col">
+                        <label htmlFor="description2">Miércoles:</label>
+                        <br>
+                        <label htmlFor="miercolesEntrada">Hora entrada: </label>
+                        <p-calendar id="miercolesEntrada" dataType="string" timeOnly="true"
+                            formControlName="miercolesEntrada"></p-calendar>
+                        <br>
+                        <label htmlFor="miercolesSalida">Hora salida: </label>
+                        <p-calendar id="miercolesSalida" dataType="string" timeOnly="true"
+                            formControlName="miercolesSalida"></p-calendar>
+                    </div>
+                    <div class="field col-12 md:col">
+                        <label htmlFor="description2">Jueves:</label>
+                        <br>
+                        <label htmlFor="juevesEntrada">Hora entrada: </label>
+                        <p-calendar id="juevesEntrada" dataType="string" timeOnly="true"
+                            formControlName="juevesEntrada"></p-calendar>
+                        <br>
+                        <label htmlFor="juevesSalida">Hora salida: </label>
+                        <p-calendar id="juevesSalida" dataType="string" timeOnly="true"
+                            formControlName="juevesSalida"></p-calendar>
+                    </div>
+                    <div class="field col-12 md:col">
+                        <label htmlFor="description2">Viernes:</label>
+                        <br>
+                        <label htmlFor="viernesEntrada">Hora entrada: </label>
+                        <p-calendar id="viernesEntrada" dataType="string" timeOnly="true"
+                            formControlName="viernesEntrada"></p-calendar>
+                        <br>
+                        <label htmlFor="viernesSalida">Hora salida: </label>
+                        <p-calendar id="viernesSalida" dataType="string" timeOnly="true"
+                            formControlName="viernesSalida"></p-calendar>
+                    </div>
+                    <div class="field col-12 md:col">
+                        <label htmlFor="description2">Sábado:</label>
+                        <br>
+                        <label htmlFor="sabadoEntrada">Hora entrada: </label>
+                        <p-calendar id="sabadoEntrada" dataType="string" timeOnly="true"
+                            formControlName="sabadoEntrada"></p-calendar>
+                        <br>
+                        <label htmlFor="sabadoSalida">Hora salida: </label>
+                        <p-calendar id="sabadoSalida" dataType="string" timeOnly="true"
+                            formControlName="sabadoSalida"></p-calendar>
+                    </div>
+                    <div class="field col-12 md:col">
+                        <label htmlFor="description2">Domingo:</label>
+                        <br>
+                        <label htmlFor="domingoEntrada">Hora entrada: </label>
+                        <p-calendar id="domingoEntrada" dataType="string" timeOnly="true"
+                            formControlName="domingoEntrada"></p-calendar>
+                        <br>
+                        <label htmlFor="domingoSalida">Hora salida: </label>
+                        <p-calendar id="domingoSalida" dataType="string" timeOnly="true"
+                            formControlName="domingoSalida"></p-calendar>
+                    </div>
+                </div>
+
+                <div class="grid">
+                    <div class="col-2 col-offset-10">
+                        <button pButton pRipple type="button" label="Guardar"
+                            class="p-button-raised p-button-rounded p-mr-2" type="button" (click)="addTimeTable()"
+                            [disabled]="addTimeTableForm.invalid">
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- tabla usuarios -->
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <h5>Usuarios</h5>
+            <p-table #dt2 [value]="userData" dataKey="id" [rows]="10" [loading]="loadingUsers" [rowHover]="true"
+                styleClass="p-datatable-gridlines" [paginator]="true"
+                [globalFilterFields]="['description_timetable','name','lastname', 'roll', 'phone', 'email','nickname']"
+                responsiveLayout="scroll">
+                <ng-template pTemplate="caption">
+                    <div class="flex justify-content-between flex-column sm:flex-row">
+                        <button pButton label="Limpiar filtro" class="p-button-outlined mb-2" icon="pi pi-filter-slash"
+                            (click)="clear(dt2)"></button>
+                        <span class="p-input-icon-left mb-2">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" #filter (input)="onGlobalFilter(dt2, $event)"
+                                placeholder="Buscar usuario" class="w-full" />
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="min-width: 2rem">
+                            <div class="flex justify-content-between align-items-center">
+                                #
+                            </div>
+                        </th>
+                        <th style="min-width: 14rem">
+                            <div class="flex justify-content-between align-items-center">
+                                nombre(s)
+                                <p-columnFilter type="text" field="name" display="menu"
+                                    placeholder="Buscar nombre(s)"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width: 12rem">
+                            <div class="flex justify-content-between align-items-center">
+                                Apellidos
+                                <p-columnFilter type="text" field="lastname" display="menu"
+                                    placeholder="Buscar Apellidos"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width: 12rem">
+                            <div class="flex justify-content-between align-items-center">
+                                Rol del perfil
+                                <p-columnFilter type="text" field="roll" display="menu"
+                                    placeholder="Buscar por perfil"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width: 12rem">
+                            <div class="flex justify-content-between align-items-center">
+                                Horario
+                                <p-columnFilter type="text" field="description_timetable" display="menu"
+                                    placeholder="Buscar horario"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width: 16rem">
+                            <div class="flex justify-content-between align-items-center">
+                                Teléfono
+                                <p-columnFilter type="text" field="phone" display="menu"
+                                    placeholder="Buscar teléfono"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width: 12rem">
+                            <div class="flex justify-content-between align-items-center">
+                                Correo electronico
+                                <p-columnFilter type="text" field="email" display="menu"
+                                    placeholder="Buscar correo electronico"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width: 12rem">
+                            <div class="flex justify-content-between align-items-center">
+                                nickname
+                                <p-columnFilter type="text" field="nickname" display="menu"
+                                    placeholder="Buscar nickname"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width: 12rem">
+                            <div class="flex justify-content-between align-items-center">
+                                Acciones
+                            </div>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-users>
+                    <tr>
+                        <td>
+                            {{ users.user_id }}
+                        </td>
+                        <td>
+                            {{ users.user_name | capitalize }}
+                        </td>
+                        <td>
+                            {{ users.user_lastName }}
+                        </td>
+                        <td>
+                            {{ users.roles_name }}
+                        </td>
+                        <td>
+                            {{ users.description_timetable }}
+                        </td>
+                        <td>
+                            {{ users.phone_number }}
+                            <a href="tel:{{ users.phone_number }}">
+                                <i class="pi pi-phone" style="margin: 0 20px;"></i>
+                            </a>
+                            <a href="https://wa.me/{{ users.phone_number }}" target="_blank">
+                                <i class="pi pi-whatsapp" style="margin: 0 20px;"></i>
+                            </a>
+                            <!-- <a href="tg://msg_url?to={{ users.phone_number }}" target="_blank">
+                                <i class="pi pi-telegram" style="margin: 0 20px;"></i>
+                            </a> -->
+                        </td>
+                        <td>
+                            {{ users.email }}
+                        </td>
+                        <td>
+                            {{ users.nickname }}
+                        </td>
+                        <td class="flex justify-content-evenly">
+                            <button pButton pRipple type="button" icon="pi pi-pencil"
+                                class="p-button-rounded p-button-text" (click)="editUser(users)"></button>
+                            <button pButton pRipple type="button" icon="pi pi-trash"
+                                class="p-button-rounded p-button-danger p-button-text" (click)="deleteUser(users)">
+                            </button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="10">No se encontraron usuarios.</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="loadingbody">
+                    <tr>
+                        <td colspan="10">Cargando datos de usuarios. Espere por favor.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <p-dialog [(visible)]="UserDialog" [style]="{ width: '450px' }" header="Detalles del usuario" [modal]="true"
+            styleClass="p-fluid">
+            <ng-template pTemplate="content">
+                <form [formGroup]="editUserForm" autocomplete="off">
+                    <div class="field">
+                        <label for="id">#</label>
+                        <input type="text" pInputText id="id" readonly formControlName="id" />
+                    </div>
+                    <div class="field">
+                        <label htmlFor="user_name2">Nombre(s):</label>
+                        <input pInputText id="user_name2" type="text" formControlName="user_name" required autofocus />
+                    </div>
+                    <div class="field">
+                        <label htmlFor="user_lastName2">Apellidos:</label>
+                        <input pInputText id="user_lastName2" type="text" formControlName="user_lastName" required
+                            autofocus />
+                    </div>
+                    <div class="field">
+                        <label htmlFor="rol2">Rol del perfil:</label>
+                        <p-dropdown [options]="dropdownItems" optionLabel="roles_name"
+                            formControlName="roles_id"></p-dropdown>
+                    </div>
+                    <div class="field">
+                        <label htmlFor="rol2">Horario:</label>
+                        <p-dropdown [options]="dropdownItemsTimeTable" optionLabel="description_timetable"
+                            formControlName="id_timetable"></p-dropdown>
+                    </div>
+                    <div class="field">
+                        <label htmlFor="phone2">Telefono</label>
+                        <p-inputMask inputId="phone_id1" formControlName="phone_id" mask="(999)999-99-99"></p-inputMask>
+                    </div>
+                    <div class="field">
+                        <label htmlFor="nickname2">nickname</label>
+                        <input pInputText id="nickname2" type="text" formControlName="nickname" />
+                    </div>
+                    <div class="field">
+                        <label htmlFor="email">Correo electronico</label>
+                        <input id="email1" type="email" formControlName="email" pInputText>
+                    </div>
+                    <div class="field">
+                        <label for="password1">Contraseña: </label>
+                        <p-password id="password1" formControlName="password" [toggleMask]="true">
+                            <ng-template pTemplate="header">
+                                <h6>elige una contraseña</h6>
+                            </ng-template>
+                            <ng-template pTemplate="footer">
+                                <p-divider></p-divider>
+                                <p class="mt-2">Sugerencias</p>
+                                <ul class="pl-2 ml-2 mt-0" style="line-height: 1.5">
+                                    <li>Al menos una minúscula</li>
+                                    <li>Al menos una mayúscula</li>
+                                    <li>Al menos un numérico</li>
+                                    <li>Mínimo 8 caracteres</li>
+                                </ul>
+                            </ng-template>
+                        </p-password>
+                    </div>
+                </form>
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text mt-3" [rounded]="true"
+                    [outlined]="true" (click)="hideDialogUsers()"></button>
+                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text mt-3" [rounded]="true"
+                    [outlined]="true" (click)="saveUserByAdmin()" [disabled]="editUserForm.invalid"></button>
+            </ng-template>
+        </p-dialog>
+
+    </div>
+</div>
+
+<!-- tabla horarios -->
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <h5>Horarios</h5>
+            <p-table #dt1 [value]="timeTableData" dataKey="id" [rows]="10" [loading]="loadingTimeTable"
+                [rowHover]="true" styleClass="p-datatable-gridlines" [paginator]="true"
+                [globalFilterFields]="['description_timetable']" responsiveLayout="scroll">
+                <ng-template pTemplate="caption">
+                    <div class="flex justify-content-between flex-column sm:flex-row">
+                        <button pButton label="Limpiar filtro" class="p-button-outlined mb-2" icon="pi pi-filter-slash"
+                            (click)="clear(dt1)"></button>
+                        <span class="p-input-icon-left mb-2">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)"
+                                placeholder="Buscar horario" class="w-full" />
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="min-width: 2rem">
+                            <div class="flex justify-content-between align-items-center">
+                                #
+                            </div>
+                        </th>
+                        <th style="min-width: 14rem">
+                            <div class="flex justify-content-between align-items-center">
+                                Descripción
+                                <p-columnFilter type="text" field="description_timetable" display="menu"
+                                    placeholder="Buscar horario"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width: 12rem">
+                            <div class="flex justify-content-between align-items-center">
+                                Lunes
+                            </div>
+                        </th>
+                        <th style="min-width: 12rem">
+                            <div class="flex justify-content-between align-items-center">
+                                Martes
+                            </div>
+                        </th>
+                        <th style="min-width: 12rem">
+                            <div class="flex justify-content-between align-items-center">
+                                Miércoles
+                            </div>
+                        </th>
+                        <th style="min-width: 12rem">
+                            <div class="flex justify-content-between align-items-center">
+                                Jueves
+                            </div>
+                        </th>
+                        <th style="min-width: 12rem">
+                            <div class="flex justify-content-between align-items-center">
+                                Viernes
+                            </div>
+                        </th>
+                        <th style="min-width: 12rem">
+                            <div class="flex justify-content-between align-items-center">
+                                Sábado
+                            </div>
+                        </th>
+                        <th style="min-width: 12rem">
+                            <div class="flex justify-content-between align-items-center">
+                                Domingo
+                            </div>
+                        </th>
+                        <th style="min-width: 12rem">
+                            <div class="flex justify-content-between align-items-center">
+                                Acciones
+                            </div>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-timeTable>
+                    <tr>
+                        <td>
+                            {{ timeTable.id_timetable }}
+                        </td>
+                        <td>
+                            {{ timeTable.description_timetable | capitalize }}
+                        </td>
+                        <!-- lunes -->
+                        <td>
+                            {{ timeTable.monday_start }} - {{ timeTable.monday_end }}
+                        </td>
+                        <!-- martes -->
+                        <td>
+                            {{ timeTable.tuesday_start }} - {{ timeTable.tuesday_end }}
+                        </td>
+                        <!-- miercoles -->
+                        <td>
+                            {{ timeTable.wednesday_start }} - {{ timeTable.wednesday_end }}
+                        </td>
+                        <!-- jueves -->
+                        <td>
+                            {{ timeTable.thursday_start }} - {{ timeTable.thursday_end }}
+                        </td>
+                        <!-- viernes -->
+                        <td>
+                            {{ timeTable.friday_start }} - {{ timeTable.friday_end }}
+                        </td>
+                        <!-- sabado -->
+                        <td>
+                            {{ timeTable.saturday_start }} - {{ timeTable.saturday_end }}
+                        </td>
+                        <!-- domingo -->
+                        <td>
+                            {{ timeTable.sunday_start }} - {{ timeTable.sunday_end }}
+                        </td>
+                        <td class="flex justify-content-evenly">
+                            <button pButton pRipple type="button" icon="pi pi-pencil"
+                                class="p-button-rounded p-button-text" [disabled]="timeTable.id_timetable === 1"
+                                (click)="editTimeTable(timeTable)"></button>
+                            <button pButton pRipple type="button" icon="pi pi-trash"
+                                class="p-button-rounded p-button-danger p-button-text"
+                                [disabled]="timeTable.id_timetable === 1" (click)="deleteTimeTable(timeTable)">
+                            </button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="10">No se encontraron Horarios.</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="loadingbody">
+                    <tr>
+                        <td colspan="10">Cargando datos de horarios. Espere por favor.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <p-dialog [(visible)]="timeTableDialog" [style]="{ width: '450px' }" header="Detalles del Horario"
+            [modal]="true" styleClass="p-fluid">
+            <ng-template pTemplate="content">
+                <form [formGroup]="editTimeTableForm" autocomplete="off">
+                    <div class="field">
+                        <label for="id">#</label>
+                        <input type="text" pInputText id="id" readonly formControlName="id" autofocus />
+                    </div>
+                    <div class="field">
+                        <label htmlFor="description2">Descripción:</label>
+                        <input pInputText id="description2" type="text" formControlName="description" required
+                            autofocus />
+                    </div>
+                    <div class="field">
+                        <h5>Lunes</h5>
+                        <br>
+                        <label>Hora entrada: </label>
+                        <p-calendar inputId="appt-time" dataType="string" timeOnly="true"
+                            formControlName="lunesEntrada"></p-calendar>
+                        <br>
+                        <label>Hora salida: </label>
+                        <p-calendar inputId="appt-time" dataType="string" timeOnly="true"
+                            formControlName="lunesSalida"></p-calendar>
+                    </div>
+                    <div class="field">
+                        <h5>Martes</h5>
+                        <br>
+                        <label>Hora entrada: </label>
+                        <p-calendar inputId="appt-time" dataType="string" timeOnly="true"
+                            formControlName="martesEntrada"></p-calendar>
+                        <br>
+                        <label>Hora salida: </label>
+                        <p-calendar inputId="appt-time" dataType="string" timeOnly="true"
+                            formControlName="martesSalida"></p-calendar>
+                    </div>
+                    <div class="field">
+                        <h5>Miércoles</h5>
+                        <br>
+                        <label>Hora entrada: </label>
+                        <p-calendar inputId="appt-time" dataType="string" timeOnly="true"
+                            formControlName="miercolesEntrada"></p-calendar>
+                        <br>
+                        <label>Hora salida: </label>
+                        <p-calendar inputId="appt-time" dataType="string" timeOnly="true"
+                            formControlName="miercolesSalida"></p-calendar>
+                    </div>
+                    <div class="field">
+                        <h5>Jueves</h5>
+                        <br>
+                        <label>Hora entrada: </label>
+                        <p-calendar inputId="appt-time" dataType="string" timeOnly="true"
+                            formControlName="juevesEntrada"></p-calendar>
+                        <br>
+                        <label>Hora salida: </label>
+                        <p-calendar inputId="appt-time" dataType="string" timeOnly="true"
+                            formControlName="juevesSalida"></p-calendar>
+                    </div>
+                    <div class="field">
+                        <h5>Viernes</h5>
+                        <br>
+                        <label>Hora entrada: </label>
+                        <p-calendar inputId="appt-time" dataType="string" timeOnly="true"
+                            formControlName="viernesEntrada"></p-calendar>
+                        <br>
+                        <label>Hora salida: </label>
+                        <p-calendar inputId="appt-time" dataType="string" timeOnly="true"
+                            formControlName="viernesSalida"></p-calendar>
+                    </div>
+                    <div class="field">
+                        <h5>Sábado</h5>
+                        <br>
+                        <label>Hora entrada: </label>
+                        <p-calendar inputId="appt-time" dataType="string" timeOnly="true"
+                            formControlName="sabadoEntrada"></p-calendar>
+                        <br>
+                        <label>Hora salida: </label>
+                        <p-calendar inputId="appt-time" dataType="string" timeOnly="true"
+                            formControlName="sabadoSalida"></p-calendar>
+                    </div>
+                    <div class="field">
+                        <h5>Domingo</h5>
+                        <br>
+                        <label>Hora entrada: </label>
+                        <p-calendar inputId="appt-time" dataType="string" timeOnly="true"
+                            formControlName="domingoEntrada"></p-calendar>
+                        <br>
+                        <label>Hora salida: </label>
+                        <p-calendar inputId="appt-time" dataType="string" timeOnly="true"
+                            formControlName="domingoSalida"></p-calendar>
+                    </div>
+                </form>
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text mt-3" [rounded]="true"
+                    [outlined]="true" (click)="hideDialogTimeTable()"></button>
+                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text mt-3" [rounded]="true"
+                    [outlined]="true" (click)="saveTimeTable()" [disabled]="editTimeTableForm.invalid"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+    </div>
+</div>

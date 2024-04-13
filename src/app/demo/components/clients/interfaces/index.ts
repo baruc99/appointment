@@ -1,0 +1,5 @@
+export * from './clients.interfaces'
+export * from './getAllClients-response.interfaces'
+export * from './addClients-response'
+export * from './updateClient-response'
+export * from './deleteClient-response'

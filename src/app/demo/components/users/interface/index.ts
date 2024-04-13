@@ -1,0 +1,10 @@
+
+export * from './deleteTimeTable-response.interface'
+export * from './deleteUserbyAdmin-response.interface'
+export * from './getAllRoles.interface'
+export * from './getAllTimeTables.interface'
+export * from './getAllTimeTables.interface'
+export * from './getAllUserByAdmin-response.interfaces'
+export * from './role.interfaces'
+export * from './timetable.interface'
+export * from './updateTimeTable-response.interface'

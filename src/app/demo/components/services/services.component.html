@@ -1,0 +1,182 @@
+<div class="grid p-fluid">
+    <div class="col-12">
+        <div class="card card-w-title">
+            <p-menubar [model]="tieredItems">
+            </p-menubar>
+        </div>
+    </div>
+</div>
+
+<p-toast key="tst"></p-toast>
+<div *ngIf="mostrarFormulario" class="grid">
+    <div [@fadeInOut] class="col-12">
+        <div class="card">
+            <h5>Datos del servicio:</h5>
+            <form [formGroup]="addServiceForm" autocomplete="off" (ngSubmit)="addService()">
+                <div class="p-fluid p-formgrid grid">
+                    <div class="field col-12 md:col-6">
+                        <label htmlFor="name2">Nombre</label>
+                        <input pInputText id="name2" type="text" formControlName="name" />
+                    </div>
+                    <div class="field col-12">
+                        <label htmlFor="description2">Descripción</label>
+                        <textarea rows="5" cols="30" id="description2" pInputTextarea
+                            formControlName="description"></textarea>
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <label htmlFor="price2">Precio</label>
+                        <p-inputNumber inputId="price2" mode="currency" formControlName="price" currency="USD"
+                            locale="en-US"></p-inputNumber>
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <label htmlFor="approximate_time2">Tiempo aproximado</label>
+                        <p-calendar id="approximate_time2" inputId="appt-time" dataType="string" timeOnly="true" formControlName="approximate_time"></p-calendar>
+                    </div>
+                </div>
+
+                <div class="grid">
+                    <div class="col-2 col-offset-10">
+                        <button pButton pRipple type="button" label="Guardar"
+                            class="p-button-raised p-button-rounded p-mr-2" type="button" (click)="addService()"
+                            [disabled]="addServiceForm.invalid">
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <p-table #dt1 [value]="serviceData" dataKey="id" [rows]="10" [loading]="loading" [rowHover]="true"
+                styleClass="p-datatable-gridlines" [paginator]="true"
+                [globalFilterFields]="['service_name']"
+                responsiveLayout="scroll">
+                <ng-template pTemplate="caption">
+                    <div class="flex justify-content-between flex-column sm:flex-row">
+                        <button pButton label="Limpiar filtro" class="p-button-outlined mb-2" icon="pi pi-filter-slash"
+                            (click)="clear(dt1)"></button>
+                        <span class="p-input-icon-left mb-2">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)"
+                                placeholder="Buscar servicio" class="w-full" />
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="min-width: 12rem">
+                            <div class="flex justify-content-between align-items-center">
+                                #
+                            </div>
+                        </th>
+                        <th style="min-width: 12rem">
+                            <div class="flex justify-content-between align-items-center">
+                                Nombre
+                                <p-columnFilter type="text" field="service_name" display="menu"
+                                    placeholder="Buscar servicio"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width: 14rem">
+                            <div class="flex justify-content-between align-items-center">
+                                Descripción
+                            </div>
+                        </th>
+                        <th style="min-width: 10rem">
+                            <div class="flex justify-content-between align-items-center">
+                                Precio
+                            </div>
+                        </th>
+                        <th style="min-width: 10rem">
+                            <div class="flex justify-content-between align-items-center">
+                                Tiempo aproximado <br> (HH:MM:SS)
+                            </div>
+                        </th>
+                        <th style="min-width: 12rem">
+                            <div class="flex justify-content-between align-items-center">
+                                Acciones
+                            </div>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-service>
+                    <tr>
+                        <td>
+                            {{ service.service_id }}
+                        </td>
+                        <td>
+                            {{ service.service_name | capitalize }}
+                        </td>
+                        <td>
+                            {{ service.service_description | capitalize }}
+                        </td>
+                        <td>
+                            $ {{ service.service_price }}
+                        </td>
+                        <td>
+                            {{ service.service_approximate_time }}
+                        </td>
+                        <td class="flex justify-content-evenly">
+                            <button pButton pRipple type="button" icon="pi pi-pencil"
+                                class="p-button-rounded p-button-text" (click)="editService(service)"></button>
+                            <button pButton pRipple type="button" icon="pi pi-trash"
+                                class="p-button-rounded p-button-danger p-button-text" (click)="deleteService(service)">
+                            </button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="6">No se encontraron servicios.</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="loadingbody">
+                    <tr>
+                        <td colspan="6">Cargando datos de servicios. Espere por favor.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <p-dialog [(visible)]="serviceDialog" [style]="{ width: '450px' }" header="Detalles del cliente" [modal]="true"
+            styleClass="p-fluid">
+            <ng-template pTemplate="content">
+                <form [formGroup]="editServiceForm" autocomplete="off" (ngSubmit)="sendEditService()">
+                    <div class="field">
+                        <label for="id">#</label>
+                        <input type="text" pInputText id="id" readonly formControlName="id" autofocus />
+                    </div>
+                    <div class="field">
+                        <label htmlFor="name2">Nombre</label>
+                        <input pInputText id="name2" type="text" formControlName="name" required autofocus />
+                    </div>
+                    <div class="field">
+                        <label htmlFor="description2">Descripción</label>
+                        <textarea rows="5" cols="30" id="description2" pInputTextarea
+                            formControlName="description" autofocus></textarea>
+                    </div>
+                    <div class="field">
+                        <label htmlFor="approximate_time2">Tiempo aproximado</label>
+                        <p-calendar id="approximate_time2" inputId="appt-time" dataType="string" timeOnly="true" formControlName="approximate_time"></p-calendar>
+                    </div>
+                    <div class="field">
+                        <label htmlFor="price2">Precio</label>
+                        <p-inputNumber inputId="price2" mode="currency" formControlName="price" currency="USD"
+                            locale="en-US"></p-inputNumber>
+                    </div>
+                </form>
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text mt-3" [rounded]="true"
+                    [outlined]="true" (click)="hideDialog()"></button>
+                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text mt-3" [rounded]="true"
+                    [outlined]="true" (click)="saveService()" [disabled]="editServiceForm.invalid"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+    </div>
+</div>
